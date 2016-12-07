@@ -1,0 +1,15 @@
+{
+  "name": "modi-language-haxe",
+  "version": "0.1.0",
+  "description": "Alternate Haxe Language support package.",
+  "keywords": [
+    "haxe",
+    "hx"
+  ],
+  "repository": "https://github.com/modimore/modi-language-haxe",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {}
+}

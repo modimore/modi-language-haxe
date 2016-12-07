@@ -1,0 +1,447 @@
+'scopeName': 'source.haxe'
+'name': 'Haxe'
+'comment': 'Haxe 3 Syntax'
+'fileTypes': ['hx']
+'foldingStartMarker': '(\\{\\s*(//.*)?$|\\s*// \\{\\{\\{|#if)'
+'foldingEndMarker': '^\\s*(\\}|// \\}\\}\\}$|#end)'
+'patterns': [
+	{ 'include': '#comments' }
+	{ 'include': '#strings' }
+	{ 'include': '#regex' }
+	{ 'include': '#control-flow' }
+	{ 'include': '#type-lists' }
+	{ 'include': '#constants' }
+	{ 'include': '#classes' }
+	{ 'include': '#packages' }
+	{ 'include': '#typedefs' }
+	{ 'include': '#function-definition' }
+	{ 'include': '#variable-declaration' }
+	{ 'include': '#variable-types' }
+	{ 'include': '#class-names' }
+	{ 'include': '#macros' }
+	{ 'include': '#access' }
+	{ 'include': '#operators' }
+	# Keywords
+	# Put here so they highlight before writer finishes
+	# the entire statement containing them.
+	{
+		'match': '\\b(abstract|class|enum|interface|extends|implements)\\b'
+		'name': 'storage.modifier.class.haxe'
+	}
+	# Variables
+	# lifted from language-haxe because I don't know what to call these.
+	{
+		'match': '\\b(var|new)\\b'
+		'name': 'variable.language.haxe'
+	}
+	{
+		'match': '\\b(Bool|Float|String|Void|Int|UInt|T|Dynamic)\\b'
+		'name': 'storage.type.haxe'
+	}
+	# Other
+	# lifted from language-haxe because I don't know what to call these.
+	{
+		'match': '#(if|else|elseif|end|error)\\b'
+		'name': 'keyword.preprocessor.macro.haxe'
+	}
+	# Macros
+	# lifted from language-haxe because I haven't used most of them.
+	{
+		'match': '((@:)(abi|abstract|access|allow|analyzer|annotation|arrayAccess|autoBuild|bind|bitmap|build|buildXml|callable|classCode|commutative|compilerGenerated|coreApi|coreType|cppFileCode|cppNamespaceCode|dce|debug|decl|defParam|delegate|depend|deprecated|event|expose|extern|fakeEnum|file|final|font|forward|from|functionCode|functionTailCode|generic|genericBuild|getter|hack|headerClassCode|headerCode|headerNamespaceCode:|hxGen|ifFeature|include|initPackage|internal|isVar|javaCanonical|jsRequire|keep|keepInit|keepSub|macro|mergeBlock|meta|multiType|native|nativeChildren|nativeGen|nativeProperty|noCompletion|noDebug|noDoc|noImportGlobal|noPrivateAccess|noStack|noUsing|nonVirtual|notNull|ns|op|optional|overload|privateAccess|property|protected|public|publicFields|pythonImport|readOnly|remove|require|rtti|runtime|runtimeValue|setter|sound|sourceFile|strict|struct|structAccess|suppressWarnings|throws|to|transient|unbound|unifyMinDynamic|unreflective|unsafe|usage|value|void|volatile)\\b)'
+		'name': 'storage.modifier.macro.haxe'
+	}
+]
+###
+Repository - A dictionary of includable patterns.
+###
+'repository':
+	'access':
+		'patterns': [
+			{
+				'match': '\\b(public|private|static|inline|override)\\b'
+				'name': 'storage.modifier.haxe'
+			}
+			{
+				'match': '\\b(dynamic|macro)\\b'
+				'name': 'storage.modifier.haxe'
+			}
+		]
+	# Classes
+	'classes':
+		'patterns': [
+			{ 'include': '#class-definitions' }
+			{ 'include': '#class-constructors' }
+		]
+	# Class Definitions
+	'class-definitions':
+		'patterns': [
+			{
+				'begin': '\\b(abstract|class|enum|interface)\\s+([A-Z]\\w*)<'
+				'beginCaptures':
+					'1':
+						'name': 'storage.modifier.class.haxe'
+					'2':
+						'name': 'entity.name.type.class.haxe'
+				'end': '>'
+				'patterns': [
+					{ 'include': '#type-params' }
+				]
+			}
+			{
+				'match': '\\b(abstract|class|enum|interface)\\s+([A-Z]\\w*)'
+				'captures':
+					'1':
+						'name': 'storage.modifier.class.haxe'
+					'2':
+						'name': 'entity.name.type.class.haxe'
+			}
+			{
+				'begin': '\\b(extends|implements)\\s+(([a-z]+\\.)+)?([A-Z]\\w*)<'
+				'beginCaptures':
+					'1':
+						'name': 'storage.modifier.class.haxe'
+					'2':
+						'name': 'entity.name.type.package.haxe'
+					'4':
+						'name': 'entity.name.type.class.haxe'
+				'end': '>'
+				'patterns': [
+					{ 'include': '#type-params' }
+				]
+			}
+			{
+				'match': '\\b(extends|implements)\\s+(([a-z]+\\.)+)?([A-Z]\\w*)'
+				'captures':
+					'1':
+						'name': 'storage.modifier.class.haxe'
+					'2':
+						'name': 'entity.name.type.package.haxe'
+					'4':
+						'name': 'entity.name.type.class.haxe'
+			}
+		]
+	# Invoked class constructors
+	'class-constructors':
+		'patterns': [
+			{
+				'begin': '\\b(new)\\s+((([a-z]+\\.)+)?([A-Z]\\w*))<\\s*'
+				'beginCaptures':
+					'1':
+						'name': 'keyword.other.variable.haxe'
+					'2':
+						'name': 'storage.type.class.haxe'
+				'end': '\\s*>'
+				'patterns': [
+					{ 'include': '#class-names' }
+				]
+			}
+			{
+				'match': '\\b(new)\\s+((([a-z]+\\.)+)?([A-Z]\\w*))'
+				'captures':
+					'1':
+						'name': 'keyword.other.variable.haxe'
+					'2':
+						'name': 'storage.type.class.haxe'
+			}
+		]
+	# Class names
+	'class-names':
+		'patterns': [
+			{
+				'begin': '\\b((([a-z]+\\.)+)?([A-Z]\\w*))<\\s*'
+				'beginCaptures':
+					'1':
+						'name': 'storage.type.class.haxe'
+				'end': '\\s*>'
+				'patterns': [
+					{ 'include': '#class-names' }
+				]
+			}
+			{
+				'match': '(([a-z]+\\.)+)?[A-Z]\\w*';
+				'name': 'storage.type.class.haxe'
+			}
+		]
+	# Comments
+	'comments':
+		'patterns': [
+			# Inline Comment
+			{
+				'match': '\\s*(//)(.*$)\\n?'
+				'captures':
+					'1':
+						'name': 'punctuation.definition.comment.haxe'
+					'2':
+						'name': 'comment.line.double-slash.haxe'
+			}
+			# Block Comment
+			{
+				'begin': '/\\*'
+				'end': '\\*/'
+				'captures':
+					'0':
+						'name': 'punctuation.definition.comment.haxe'
+				'name': 'comment.block.haxe'
+			}
+		]
+	# Constants
+	'constants':
+		'patterns': [
+			{
+				'match': '\\b(null|true|false)\\b'
+				'name': 'constant.language.haxe'
+			}
+			{
+				'match': '\\b([+-]\s*)?([0-9]+|[0-9]*\\.[0-9]+)\\b'
+				'name': 'constant.numeric.haxe'
+			}
+			{
+				'match': '\\b0[xX][0-9a-fA-F]*\\b'
+				'name': 'constant.numeric.haxe'
+			}
+		]
+	# Control Flow
+	'control-flow':
+		'patterns': [
+			# if, else if, else
+			{
+				'match': '\\b(if|else if|else)\\b'
+				'name': 'keyword.control.conditional.haxe'
+			}
+			# try, throw, catch
+			{
+				'match': '\\b(try|throw|catch)\\b'
+				'name': 'keyword.control.try.haxe'
+			}
+			# switch, case, default
+			{
+				'match': '\\b(switch|case|default)\\b'
+				'name': 'keyword.control.switch.haxe'
+			}
+			# for, in, do, while, continue, break
+			{
+				'match': '\\b(for|in|\\.\\.\\.|do|while|continue|break)\\b'
+				'name': 'keyword.control.loop.haxe'
+			}
+			{
+				'match': '\\b(return)\\b'
+				'name': 'keyword.control.return.haxe'
+			}
+		]
+	# Function Definition
+	'function-definition':
+		'patterns': [
+			{
+				'begin': '\\b(function)\\s+([a-zA-Z_]\\w*)<'
+				'beginCaptures':
+					'1':
+						'name': 'storage.type.function.haxe'
+					'2':
+						'name': 'entity.name.function.haxe'
+				'end': '>'
+				'patterns': [
+					{ 'include': '#type-params' }
+				]
+			}
+			{
+				'match': '\\b(function)\\s+([a-zA-Z_]\\w*)'
+				'captures':
+					'1':
+						'name': 'storage.type.function.haxe'
+					'2':
+						'name': 'entity.name.function.haxe'
+			}
+		]
+	# Operators
+	'operators':
+		'patterns': [
+			{
+				'match': '='
+				'name': 'keyword.operator.assignment.haxe'
+			}
+			{
+				'match': '[-+*/%]'
+				'name': 'keyword.operator.arithmetic.haxe'
+			}
+			{
+				'match': '(\\-\\-|\\+\\+)'
+				'name': 'keyword.operator.increment-decrement.haxe'
+			}
+			{
+				'match': '(==|!=|<=|>=|<>|<|>)'
+				'name': 'keyword.operator.comparison.haxe'
+			}
+			{
+				# ! and && and ||
+				'match': '(!|&&|\\|\\|)'
+				'name': 'keyword.operator.boolean.haxe'
+			}
+			{
+				'match': '[&|~]'
+				'name': 'keyword.operator.bitwise.haxe'
+			}
+			{
+				'match': '[!&|+\\-*/%=?:]'
+				'name': 'keyword.operator.symbolic.haxe'
+			}
+		]
+	# Packages
+	'packages':
+		'patterns': [
+			{
+				'match': '(package)\\s+(([a-z]+\\.)*([a-z]*))'
+				'captures':
+					'1':
+						'name': 'storage.type.package.haxe'
+					'2':
+						'name': 'entity.name.type.package.haxe'
+					'3':
+						'name': 'entity.name.type.class.haxe'
+			}
+			{
+				'match': '(import)\\s+(([a-z]+\\.)*([A-Z]\\w*))(\\.([A-Z]\\w*))?(\\s+(as|in)\\s+([A-Z]\\w*))?'
+				'captures':
+					'1':
+						'name': 'storage.type.import.haxe'
+					'2':
+						'name': 'entity.name.type.package.haxe'
+					'6':
+						'name': 'entity.name.type.class.haxe'
+					'8':
+						'name': 'storage.type.import.haxe'
+					'9':
+						'name': 'entity.name.type.class.haxe'
+			}
+			{
+				'match': '(import)\\s+(([a-z]+\\.)*[a-z]+(\\.\\*)?)'
+				'captures':
+					'1':
+						'name': 'storage.type.import.haxe'
+					'2':
+						'name': 'entity.name.type.package.haxe'
+			}
+		]
+	'regex':
+		'patterns': [
+			{
+				'begin': '~/'
+				'end': '/'
+				'name': 'string.regexp.haxe'
+				'patterns': [
+					{
+						# A single backslash then any character
+						'match': '\\\\.'
+						'name': 'constant.character.escape.haxe'
+					}
+				]
+			}
+		]
+	# Strings
+	'strings':
+		'patterns': [
+			# Single-quoted
+			{
+				'begin': '\''
+				'beginCaptures':
+					'0':
+						'name': 'punctuation.definition.string.begin.haxe'
+				'end': '\''
+				'endCaptures':
+					'0':
+						'name': 'punctuation.definition.string.end.haxe'
+				'name': 'string.quoted.single.haxe'
+				'patterns': [
+					{
+						'match': '\\\\.'
+						'name': 'constant.character.escape.haxe'
+					}
+				]
+			}
+			# Double-quoted
+			{
+				'begin': '"'
+				'beginCaptures':
+					'0':
+						'name': 'punctuation.definition.string.begin.haxe'
+				'end': '"'
+				'endCaptures':
+					'0':
+						'name': 'punctuation.definition.string.end.haxe'
+				'name': 'string.quoted.double.haxe'
+				'patterns': [
+					{
+						'match': '\\\\.'
+						'name': 'constant.character.escape.haxe'
+					}
+				]
+			}
+		]
+	# Typedef
+	'typedefs':
+		'patterns': [
+			{
+				'begin': '\\b(typedef)\\s+'
+				'beginCaptures':
+					'1':
+						'name': 'storage.type.class.haxe'
+				'end': '\\s*='
+				'patterns': [
+					{ 'include': '#type-params' }
+				]
+			}
+		]
+	# Lists of Bracket-enclosed types.
+	'type-lists':
+		'patterns': [
+			'begin': '<'
+			'end': '>'
+			'patterns': [
+				{ 'include': '#class-names' }
+			]
+		]
+	# Type parameters.
+	# The same as structure as class-names but styled differently.
+	'type-params':
+		'patterns': [
+			{
+				'begin': '\\b((([a-z]+\\.)+)?([A-Z]\\w*))<\\s*'
+				'beginCaptures':
+					'1':
+						'name': 'entity.name.type.class.haxe'
+				'end': '\\s*>'
+				'patterns': [
+					{ 'include': '#type-params' }
+				]
+			}
+			{
+				'match': '(([a-z]+\\.)+)?[A-Z]\\w*\\s*';
+				'name': 'entity.name.type.class.haxe'
+			}
+		]
+	'variable-declaration':
+		'patterns': [
+			{
+				'begin': '\\b(var)\\s+\\w+\\s*:'
+				'beginCaptures':
+					'1':
+						'name': 'keyword.other.variable.haxe'
+				'end': '[^\\w]'
+				'patterns': [
+					{ 'include': '#class-names' }
+				]
+			}
+			{
+				'match': '\\b(var)\\s+\\w+'
+				'captures':
+					'1':
+						'name': 'keyword.other.variable.haxe'
+			}
+		]
+	'variable-types':
+		'patterns': [
+			'begin': ':\\s*'
+			'end': '[^\\w]'
+			'patterns': [
+				{ 'include': '#class-names' }
+			]
+		]
