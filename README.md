@@ -14,6 +14,7 @@ This package is different in the following ways that I know of from [language-ha
 * Multiple type parameters
 * Nested type parameters
 * Some different highlighting choices
+* Identifies user-defined constants
 
 ## To-Do
 
