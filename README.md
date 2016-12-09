@@ -1,4 +1,4 @@
-# atom-haxe-grammar
+# modi-language-haxe
 
 A Haxe language grammar for the Atom text editor.
 

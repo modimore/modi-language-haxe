@@ -97,7 +97,7 @@ Repository - A dictionary of includable patterns.
 						'name': 'entity.name.type.class.haxe'
 			}
 			{
-				'begin': '\\b(extends|implements)\\s+(([a-z]+\\.)+)?([A-Z]\\w*)<'
+				'begin': '\\b(extends|implements)\\s+(([a-z]+)\\.)*([A-Z]\\w*)<'
 				'beginCaptures':
 					'1':
 						'name': 'storage.modifier.class.haxe'
@@ -111,7 +111,7 @@ Repository - A dictionary of includable patterns.
 				]
 			}
 			{
-				'match': '\\b(extends|implements)\\s+(([a-z]+\\.)+)?([A-Z]\\w*)'
+				'match': '\\b(extends|implements)\\s+(([a-z]+)\\.)*([A-Z]\\w*)'
 				'captures':
 					'1':
 						'name': 'storage.modifier.class.haxe'
@@ -125,7 +125,7 @@ Repository - A dictionary of includable patterns.
 	'class-constructors':
 		'patterns': [
 			{
-				'begin': '\\b(new)\\s+((([a-z]+\\.)+)?([A-Z]\\w*))<\\s*'
+				'begin': '\\b(new)\\s+((([a-z]+)\\.)*([A-Z]\\w*))<\\s*'
 				'beginCaptures':
 					'1':
 						'name': 'keyword.other.variable.haxe'
@@ -137,7 +137,7 @@ Repository - A dictionary of includable patterns.
 				]
 			}
 			{
-				'match': '\\b(new)\\s+((([a-z]+\\.)+)?([A-Z]\\w*))'
+				'match': '\\b(new)\\s+((([a-z]+)\\.)*([A-Z]\\w*))\\b'
 				'captures':
 					'1':
 						'name': 'keyword.other.variable.haxe'
@@ -149,7 +149,7 @@ Repository - A dictionary of includable patterns.
 	'class-names':
 		'patterns': [
 			{
-				'begin': '\\b((([a-z]+\\.)+)?([A-Z]\\w*))<\\s*'
+				'begin': '\\b((([a-z]+)\\.)*([A-Z]\\w*))<\\s*'
 				'beginCaptures':
 					'1':
 						'name': 'storage.type.class.haxe'
@@ -159,7 +159,7 @@ Repository - A dictionary of includable patterns.
 				]
 			}
 			{
-				'match': '\\b(([a-z]+\\.)+)?[A-Z]\\w*';
+				'match': '\\b(([a-z]+)\\.)*[A-Z]\\w*\\b';
 				'name': 'storage.type.class.haxe'
 			}
 		]
@@ -290,7 +290,7 @@ Repository - A dictionary of includable patterns.
 	'packages':
 		'patterns': [
 			{
-				'match': '\\b(package)\\s+(([a-z]+\\.)*([a-z]*))'
+				'match': '\\b(package)\\s+((([a-z]+)\\.)*([a-z]+))\\b'
 				'captures':
 					'1':
 						'name': 'storage.type.package.haxe'
@@ -409,13 +409,13 @@ Repository - A dictionary of includable patterns.
 				'beginCaptures':
 					'1':
 						'name': 'entity.name.type.class.haxe'
-				'end': '\\s*>'
+				'end': '\\s*>(?![\\w\\.])'
 				'patterns': [
 					{ 'include': '#type-params' }
 				]
 			}
 			{
-				'match': '\\b(([a-z]+\\.)+)?[A-Z]\\w*\\s*';
+				'match': '\\b(([a-z]+\\.)+)?[A-Z]\\w*\\s*(?![\\w\\.])';
 				'name': 'entity.name.type.class.haxe'
 			}
 		]
@@ -425,19 +425,19 @@ Repository - A dictionary of includable patterns.
 	'user-constants':
 		'patterns': [
 			{
-				'begin': '\\b(var)\\s+([A-Z_][A-Z0-9_]*)\\s*:'
+				'begin': '\\b(var)\\s+([A-Z_][A-Z0-9_]+)\\s*:'
 				'beginCaptures':
 					'1':
 						'name': 'keyword.other.variable.haxe'
 					'2':
 						'name': 'constant.user-defined.haxe'
-				'end': '[^\\w]'
+				'end': '(?!\\w)'
 				'patterns': [
 					{ 'include': '#class-names' }
 				]
 			}
 			{
-				'match': '\\b(var)\\s+([A-Z_][A-Z0-9_]*)\\b'
+				'match': '\\b(var)\\s+([A-Z_][A-Z0-9_]+)\\b'
 				'captures':
 					'1':
 						'name': 'keyword.other.variable.haxe'
@@ -445,7 +445,7 @@ Repository - A dictionary of includable patterns.
 						'name': 'constant.user-defined.haxe'
 			}
 			{
-				'match': '\\b[A-Z_][A-Z0-9_]*\\b'
+				'match': '\\b[A-Z_][A-Z0-9_]+\\b'
 				'name': 'constant.user-defined.haxe'
 			}
 		]
@@ -456,9 +456,9 @@ Repository - A dictionary of includable patterns.
 				'beginCaptures':
 					'1':
 						'name': 'keyword.other.variable.haxe'
-				'end': '[^\\w]'
+				'end': '(?!\\w)'
 				'patterns': [
-					{ 'include': '#class-names' }
+					{ 'include': '#type-params' }
 				]
 			}
 			{
@@ -471,8 +471,10 @@ Repository - A dictionary of includable patterns.
 	'variable-types':
 		'patterns': [
 			'begin': ':\\s*'
-			'end': '[^\\w]'
+			'end': '(?!\\w)'
 			'patterns': [
+				{ 'include': '#user-constants' }
 				{ 'include': '#type-params' }
+				{ 'include': '$self' }
 			]
 		]
