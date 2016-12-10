@@ -1,8 +1,12 @@
+## 0.2.3 - Fixes less-than operator and user-constant types
+* Removes rule for arbitrary angle bracket-enclosed type-lists
+* Makes the type of user-constants look like any other type
+
 ## 0.2.2 - Makes better use of regex lookaheads
 * Uses regex lookaheads to fix ternary operators
 * Uses regex lookaheads to not match extra characters
 * Changes packages to any number of '.'-joined lowercase words
-* Specifies that user constant names should be more than one letter.
+* Specifies that user constant names should be more than one letter
 
 ## 0.2.1 - Fixes first set of problems seen
 * Changes classification applied to type declarations

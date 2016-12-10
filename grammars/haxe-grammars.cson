@@ -9,7 +9,6 @@
 	{ 'include': '#strings' }
 	{ 'include': '#regex' }
 	{ 'include': '#control-flow' }
-	{ 'include': '#type-lists' }
 	{ 'include': '#constants' }
 	{ 'include': '#user-constants' }
 	{ 'include': '#classes' }
@@ -391,21 +390,12 @@ Repository - A dictionary of includable patterns.
 				]
 			}
 		]
-	# Lists of Bracket-enclosed types.
-	'type-lists':
-		'patterns': [
-			'begin': '<'
-			'end': '>'
-			'patterns': [
-				{ 'include': '#class-names' }
-			]
-		]
 	# Type parameters.
 	# The same as structure as class-names but styled differently.
 	'type-params':
 		'patterns': [
 			{
-				'begin': '\\b((([a-z]+\\.)+)?([A-Z]\\w*))<\\s*'
+				'begin': '\\b((([a-z]+)\\.)*([A-Z]\\w*))<\\s*'
 				'beginCaptures':
 					'1':
 						'name': 'entity.name.type.class.haxe'
@@ -415,7 +405,7 @@ Repository - A dictionary of includable patterns.
 				]
 			}
 			{
-				'match': '\\b(([a-z]+\\.)+)?[A-Z]\\w*\\s*(?![\\w\\.])';
+				'match': '\\b(([a-z]+)\\.)*[A-Z]\\w*\\s*(?![\\w\\.])';
 				'name': 'entity.name.type.class.haxe'
 			}
 		]
@@ -424,18 +414,6 @@ Repository - A dictionary of includable patterns.
 	# the programmer intends this to only be set once.
 	'user-constants':
 		'patterns': [
-			{
-				'begin': '\\b(var)\\s+([A-Z_][A-Z0-9_]+)\\s*:'
-				'beginCaptures':
-					'1':
-						'name': 'keyword.other.variable.haxe'
-					'2':
-						'name': 'constant.user-defined.haxe'
-				'end': '(?!\\w)'
-				'patterns': [
-					{ 'include': '#class-names' }
-				]
-			}
 			{
 				'match': '\\b(var)\\s+([A-Z_][A-Z0-9_]+)\\b'
 				'captures':
@@ -449,18 +427,10 @@ Repository - A dictionary of includable patterns.
 				'name': 'constant.user-defined.haxe'
 			}
 		]
+	# Variable Declarations
+	# Handles the general case, but see #user-constants
 	'variable-declaration':
 		'patterns': [
-			{
-				'begin': '\\b(var)\\s+\\w+\\s*:'
-				'beginCaptures':
-					'1':
-						'name': 'keyword.other.variable.haxe'
-				'end': '(?!\\w)'
-				'patterns': [
-					{ 'include': '#type-params' }
-				]
-			}
 			{
 				'match': '\\b(var)\\s+\\w+'
 				'captures':
@@ -468,6 +438,10 @@ Repository - A dictionary of includable patterns.
 						'name': 'keyword.other.variable.haxe'
 			}
 		]
+	# Variable Types
+	# Handles a type declared after a colon.
+	# Must also account for being part of ternary operations.
+	# This is why #type-params is flanked by #user-constants and $self.
 	'variable-types':
 		'patterns': [
 			'begin': ':\\s*'
