@@ -1,3 +1,7 @@
+## 0.2.4 - Fixes function types and two-symbol operators
+* Function types (A->B->C) are now recognized
+* `==`, `--`, and `++` are highlighted as single operators
+
 ## 0.2.3 - Fixes less-than operator and user-constant types
 * Removes rule for arbitrary angle bracket-enclosed type-lists
 * Makes the type of user-constants look like any other type

@@ -256,20 +256,20 @@ Repository - A dictionary of includable patterns.
 	'operators':
 		'patterns': [
 			{
-				'match': '='
-				'name': 'keyword.operator.assignment.haxe'
+				'match': '(==|!=|<=|>=|<>|<|>)'
+				'name': 'keyword.operator.comparison.haxe'
 			}
 			{
-				'match': '[-+*/%]'
-				'name': 'keyword.operator.arithmetic.haxe'
+				'match': '='
+				'name': 'keyword.operator.assignment.haxe'
 			}
 			{
 				'match': '(\\-\\-|\\+\\+)'
 				'name': 'keyword.operator.increment-decrement.haxe'
 			}
 			{
-				'match': '(==|!=|<=|>=|<>|<|>)'
-				'name': 'keyword.operator.comparison.haxe'
+				'match': '[-+*/%]'
+				'name': 'keyword.operator.arithmetic.haxe'
 			}
 			{
 				# ! and && and ||
@@ -444,7 +444,7 @@ Repository - A dictionary of includable patterns.
 	# This is why #type-params is flanked by #user-constants and $self.
 	'variable-types':
 		'patterns': [
-			'begin': ':\\s*'
+			'begin': '(:|->)\\s*'
 			'end': '(?!\\w)'
 			'patterns': [
 				{ 'include': '#user-constants' }
